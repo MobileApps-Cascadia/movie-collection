@@ -1,5 +1,6 @@
 package edu.cascadia.mobile.apps.movies;
 
+import android.arch.persistence.room.RoomDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import edu.cascadia.mobile.apps.movies.database.DirectorDao;
+import edu.cascadia.mobile.apps.movies.database.MovieDao;
+import edu.cascadia.mobile.apps.movies.database.movieDatabase;
 import edu.cascadia.mobile.apps.movies.model.DirectorEntity;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 import edu.cascadia.mobile.apps.movies.ui.MoviesAdapter;
@@ -28,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     MoviesAdapter mMoviesAdapter;
 
-    private List<MovieEntity> mMovieData = new ArrayList<>();
     private List<DirectorEntity> mDirectorData = new ArrayList<>();
+    private movieDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mMovieData = SampleData.getMovies();
+        //Get Database
+        mDatabase = movieDatabase.getInstance(this);
+        mDatabase.directorDao().addAll(SampleData.getDirectors());
+        mDatabase.movieDao().addAll(SampleData.getMovies());
+
         mDirectorData = SampleData.getDirectors();
         ButterKnife.bind(this);
         initRecyclerView();
@@ -57,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(){
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MoviesAdapter(mMovieData,mDirectorData,this));
+        mRecyclerView.setAdapter(new MoviesAdapter(mDatabase.movieDao().getMovies(),mDirectorData,this));
     }
 
     @Override

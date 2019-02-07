@@ -1,13 +1,18 @@
 package edu.cascadia.mobile.apps.movies.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "director")
 public class DirectorEntity {
+    @PrimaryKey(autoGenerate = true)
     private int id;
-    private String firstName;
-    private String lastName;
+    @ColumnInfo(name = "first_name") private String firstName;
+    @ColumnInfo(name = "last_name")private String lastName;
 
+    @Ignore
     public DirectorEntity() {
     }
 
@@ -17,6 +22,7 @@ public class DirectorEntity {
         this.lastName = lastName;
     }
 
+    @Ignore
     public DirectorEntity(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -1,13 +1,29 @@
 package edu.cascadia.mobile.apps.movies.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
+
+
+@Entity(tableName = "movie",
+        indices = @Index("director_id"),
+        foreignKeys = @ForeignKey(entity = DirectorEntity.class,
+                parentColumns = "id",
+                childColumns = "director_id"))
 public class MovieEntity  {
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
     private String year;
-    private int runTime;
+    @ColumnInfo(name = "run_time")private int runTime;
     private Boolean collection;
-    private int directorId;
+    @ColumnInfo(name = "director_id")
+    int directorId;
 
+    @Ignore
     public MovieEntity() {
     }
 
@@ -19,7 +35,7 @@ public class MovieEntity  {
         this.collection = collection;
         this.directorId = directorId;
     }
-
+    @Ignore
     public MovieEntity(String title, String year, int runTime, Boolean collection, int directorId) {
         this.title = title;
         this.year = year;
