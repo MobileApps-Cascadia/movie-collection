@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import edu.cascadia.mobile.apps.movies.R;
 import edu.cascadia.mobile.apps.movies.model.DirectorEntity;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
@@ -52,12 +50,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.movie_text)
         TextView mTextView;
 
         public ViewHolder(View itemView){
             super(itemView);
-            ButterKnife.bind(this, itemView );
+            mTextView = itemView.findViewById(R.id.movie_text);
         }
     }
 }

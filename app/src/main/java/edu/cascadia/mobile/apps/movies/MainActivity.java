@@ -15,8 +15,6 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import edu.cascadia.mobile.apps.movies.database.DirectorDao;
 import edu.cascadia.mobile.apps.movies.database.MovieDao;
 import edu.cascadia.mobile.apps.movies.database.movieDatabase;
@@ -27,7 +25,6 @@ import edu.cascadia.mobile.apps.movies.utilities.SampleData;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
     MoviesAdapter mMoviesAdapter;
@@ -41,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mRecyclerView = findViewById(R.id.recycler_view);
 
         //Get Database
         mDatabase = movieDatabase.getInstance(this);
@@ -48,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         mDatabase.movieDao().addAll(SampleData.getMovies());
 
         mDirectorData = SampleData.getDirectors();
-        ButterKnife.bind(this);
         initRecyclerView();
 
         FloatingActionButton fab = findViewById(R.id.fab);
