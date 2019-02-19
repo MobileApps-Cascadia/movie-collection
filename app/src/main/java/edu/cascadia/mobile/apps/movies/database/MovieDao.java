@@ -9,7 +9,6 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import edu.cascadia.mobile.apps.movies.model.DirectorEntity;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 
 @Dao
@@ -30,9 +29,6 @@ public interface MovieDao {
     //Read
     @Query("select * from movie where id = :id")
     MovieEntity getMovie(int id);
-    @Query("select * from director where director.id = " +
-            "(select director_id from movie where movie.id = :movie_id)")
-    LiveData<DirectorEntity> getDirector(int movie_id);
     @Query("select * from movie order by title asc")
     List<MovieEntity> getMovies();
 

@@ -16,10 +16,8 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.cascadia.mobile.apps.movies.database.DirectorDao;
 import edu.cascadia.mobile.apps.movies.database.MovieDao;
 import edu.cascadia.mobile.apps.movies.database.movieDatabase;
-import edu.cascadia.mobile.apps.movies.model.DirectorEntity;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 import edu.cascadia.mobile.apps.movies.ui.MoviesAdapter;
 import edu.cascadia.mobile.apps.movies.utilities.SampleData;
@@ -27,10 +25,7 @@ import edu.cascadia.mobile.apps.movies.utilities.SampleData;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
-
     MoviesAdapter mMoviesAdapter;
-
-    private List<DirectorEntity> mDirectorData = new ArrayList<>();
     private movieDatabase mDatabase;
 
     @Override
@@ -43,18 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
         //Get Database
         mDatabase = movieDatabase.getInstance(this);
-        mDatabase.directorDao().addAll(SampleData.getDirectors());
         mDatabase.movieDao().addAll(SampleData.getMovies());
 
-        mDirectorData = SampleData.getDirectors();
         initRecyclerView();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addMovie = new Intent("edu.cascadia.mobile.apps.movies.EditMovie");
-                startActivity(addMovie);
+                Intent editMovie = new Intent("edu.cascadia.mobile.apps.movies.EditMovie");
+                startActivity(editMovie);
             }
         });
 
@@ -63,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(){
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MoviesAdapter(mDatabase.movieDao().getMovies(),mDirectorData,this));
+        mRecyclerView.setAdapter(new MoviesAdapter(mDatabase.movieDao().getMovies(),this));
     }
 
     @Override

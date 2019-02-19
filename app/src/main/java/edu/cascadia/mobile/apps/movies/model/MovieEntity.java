@@ -8,40 +8,33 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 
-@Entity(tableName = "movie",
-        indices = @Index("director_id"),
-        foreignKeys = @ForeignKey(entity = DirectorEntity.class,
-                parentColumns = "id",
-                childColumns = "director_id"))
+@Entity(tableName = "movie")
 public class MovieEntity  {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
     private String year;
     @ColumnInfo(name = "run_time")private int runTime;
-    private Boolean collection;
     @ColumnInfo(name = "director_id")
-    int directorId;
+    private String director;
 
     @Ignore
     public MovieEntity() {
     }
 
-    public MovieEntity(int id, String title, String year, int runTime, Boolean collection, int directorId) {
+    public MovieEntity(int id, String title, String director, String year, int runTime) {
         this.id = id;
         this.title = title;
         this.year = year;
         this.runTime = runTime;
-        this.collection = collection;
-        this.directorId = directorId;
+        this.director = director;
     }
     @Ignore
-    public MovieEntity(String title, String year, int runTime, Boolean collection, int directorId) {
+    public MovieEntity(String title,  String director, String year,  int runTime) {
         this.title = title;
         this.year = year;
         this.runTime = runTime;
-        this.collection = collection;
-        this.directorId = directorId;
+        this.director = director;
     }
 
     public int getId() {
@@ -76,20 +69,12 @@ public class MovieEntity  {
         this.runTime = runTime;
     }
 
-    public Boolean getCollection() {
-        return collection;
+    public String getDirector() {
+        return director;
     }
 
-    public void setCollection(Boolean collection) {
-        this.collection = collection;
-    }
-
-    public int getDirectorId() {
-        return directorId;
-    }
-
-    public void setDirectorId(int directorId) {
-        this.directorId = directorId;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     @Override
@@ -99,8 +84,7 @@ public class MovieEntity  {
                 ", title='" + title + '\'' +
                 ", year='" + year + '\'' +
                 ", runTime=" + runTime +
-                ", collection=" + collection +
-                ", directorId=" + directorId +
+                ", director=" + director +
                 '}';
     }
 }
