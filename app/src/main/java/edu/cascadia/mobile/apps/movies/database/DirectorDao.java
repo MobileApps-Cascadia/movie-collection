@@ -26,7 +26,8 @@ public interface DirectorDao {
     LiveData<DirectorEntity> getDirector(int id);
     @Query("select * from movie where director_id = :director_id")
     LiveData<List<MovieEntity>> getMovies(int director_id);
-
+    @Query("select * from director")
+    List<DirectorEntity> getDirectors();
     //Delete
     @Delete
     void remove(DirectorEntity directorEntity);

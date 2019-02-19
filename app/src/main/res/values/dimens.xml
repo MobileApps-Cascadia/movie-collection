@@ -3,4 +3,7 @@
     <dimen name="list_item_text_size">18sp</dimen>
     <dimen name="fab_margin_top">8dp</dimen>
     <dimen name="list_fab_margin">8dp</dimen>
+    <dimen name="edit_margin_2">16dp</dimen>
+    <dimen name="edit_margin">8dp</dimen>
+    <dimen name="scrollview_text_size">14dp</dimen>
 </resources>
