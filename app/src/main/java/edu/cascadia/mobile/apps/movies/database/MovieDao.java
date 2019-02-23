@@ -24,8 +24,9 @@ public interface MovieDao {
     //Delete
     @Delete
     void remove(MovieEntity movie);
-    @Delete
-    void removeAll(List<MovieEntity> movies);
+
+    @Query("DELETE FROM movie")
+    int removeAll();
 
     //Read
     @Query("select * from movie where id = :id")

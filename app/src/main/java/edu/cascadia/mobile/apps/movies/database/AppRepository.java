@@ -41,4 +41,13 @@ public class AppRepository {
     private LiveData<List<MovieEntity>> getAllMovies() {
         return mDb.movieDao().getMovies();
     }
+
+    public void deleteAllData() {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.movieDao().removeAll();
+            }
+        });
+    }
 }
