@@ -19,6 +19,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/edit_title"
         android:layout_width="wrap_content"
@@ -29,8 +30,8 @@
         android:layout_marginEnd="@dimen/edit_margin"
         android:layout_marginRight="@dimen/edit_margin"
         android:ems="10"
+        android:hint="Title"
         android:inputType="textCapWords"
-        android:text="Another Great Movie"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label_title"
         app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +47,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_title" />
+
     <EditText
         android:id="@+id/edit_director"
         android:layout_width="0dp"
@@ -55,11 +57,11 @@
         android:layout_marginTop="@dimen/edit_margin_2"
         android:layout_marginEnd="@dimen/edit_margin_2"
         android:layout_marginRight="16dp"
+        android:hint="Lastname, FIrstname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        android:text="Misyazaki, Hiayao"
         app:layout_constraintStart_toEndOf="@+id/label_director"
-        app:layout_constraintTop_toBottomOf="@+id/edit_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_title" />
 
     <TextView
         android:id="@+id/label_year"
@@ -72,6 +74,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_director" />
+
     <EditText
         android:id="@+id/edit_year"
         android:layout_width="wrap_content"
@@ -82,7 +85,7 @@
         android:layout_marginEnd="@dimen/edit_margin"
         android:layout_marginRight="@dimen/edit_margin"
         android:ems="10"
-        android:text="2010"
+        android:hint="Year"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label_year"
@@ -99,6 +102,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_year" />
+
     <EditText
         android:id="@+id/edit_runtime"
         android:layout_width="wrap_content"
@@ -109,7 +113,7 @@
         android:layout_marginEnd="@dimen/edit_margin"
         android:layout_marginRight="@dimen/edit_margin"
         android:ems="10"
-        android:text="108"
+        android:hint="Run TIme"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label_runtime"
