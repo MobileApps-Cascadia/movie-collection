@@ -29,6 +29,10 @@ public class AppRepository {
         mMovies = getAllMovies();
     }
 
+    public MovieEntity getMovieById(int movieId) {
+        return mDb.movieDao().getMovie(movieId);
+    }
+
     public void addSampleData() {
         executor.execute(new Runnable() {
             @Override
@@ -47,6 +51,25 @@ public class AppRepository {
             @Override
             public void run() {
                 mDb.movieDao().removeAll();
+            }
+        });
+    }
+
+    public void insertMovie(final MovieEntity movie) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.movieDao().addOrUpdate(movie);
+            }
+        });
+    }
+
+
+    public void deleteMovie(final MovieEntity movie) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.movieDao().remove(movie);
             }
         });
     }

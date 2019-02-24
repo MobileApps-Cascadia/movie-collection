@@ -113,7 +113,7 @@
         android:layout_marginEnd="@dimen/edit_margin"
         android:layout_marginRight="@dimen/edit_margin"
         android:ems="10"
-        android:hint="Run TIme"
+        android:hint="Run TIme (Minutes)"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label_runtime"

@@ -3,4 +3,7 @@
     <string name="action_add_sample_data">Add sample data</string>
     <string name="title_activity_edit_movie">EditMovie</string>
     <string name="delete_all">Delete all movies</string>
+    <string name="new_movie">New Movie</string>
+    <string name="edit_movie">Edit Movie</string>
+    <string name="delete">delete</string>
 </resources>

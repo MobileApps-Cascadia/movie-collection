@@ -1,29 +1,36 @@
 package edu.cascadia.mobile.apps.movies;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import edu.cascadia.mobile.apps.movies.database.movieDatabase;;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
+import edu.cascadia.mobile.apps.movies.viewmodel.EditViewModel;
+
+import static edu.cascadia.mobile.apps.movies.utilities.Constants.EDITING_KEY;
+import static edu.cascadia.mobile.apps.movies.utilities.Constants.MOVIE_ID_KEY;
+
 
 public class EditMovie extends AppCompatActivity {
-    private movieDatabase mDatabase;
-    public static String MOVIE_ID_KEY = "id";
 
-    private MovieEntity MOVIE;
-    private int movieId;
-    private int movieListSize;
-    private int newMovieListSize;
-    private int runtime;
+    private EditViewModel mViewModel;
+    private boolean mNewMovie, mEditing;
+
+    private EditText eTitle;
+    private EditText eDirector;
+    private EditText eYear;
+    private EditText eRuntime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,56 +38,98 @@ public class EditMovie extends AppCompatActivity {
         setContentView(R.layout.activity_edit_movie);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final EditText eTitle = findViewById(R.id.edit_title);
-        final EditText eDirector = findViewById(R.id.edit_director);
-        final EditText eYear = findViewById(R.id.edit_year);
-        final EditText eRuntime = findViewById(R.id.edit_runtime);
+        eTitle = findViewById(R.id.edit_title);
+        eDirector = findViewById(R.id.edit_director);
+        eYear = findViewById(R.id.edit_year);
+        eRuntime = findViewById(R.id.edit_runtime);
 
-        mDatabase = movieDatabase.getInstance(this);
-
-        movieListSize = mDatabase.movieDao().getCount();
-
-        MOVIE = mDatabase.movieDao().getMovie(getIntent().getIntExtra(MOVIE_ID_KEY,0));
-
-        if (MOVIE != null) {
-            eTitle.setText(MOVIE.getTitle());
-            eDirector.setText(MOVIE.getDirector());
-            eYear.setText(MOVIE.getYear());
-            eRuntime.setText(Integer.toString(MOVIE.getRunTime()));
-            movieId = MOVIE.getId();
+        if (savedInstanceState != null) {
+            mEditing = savedInstanceState.getBoolean(EDITING_KEY);
         }
+
+        initViewModel();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                runtime = Integer.parseInt(eRuntime.getText().toString());
+                saveOrUpdate();
 
-                MovieEntity mMovie = new MovieEntity(
-                        movieId,
-                        eTitle.getText().toString(),
-                        eDirector.getText().toString(),
-                        eYear.getText().toString(),
-                        runtime
-                        );
-
-                mDatabase.movieDao().addOrUpdate(mMovie);
-
-                newMovieListSize = mDatabase.movieDao().getCount();
-
-                if (movieListSize == newMovieListSize) {
-                    Toast.makeText(EditMovie.this, "Movie Updated", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(EditMovie.this, "New Movie Added", Toast.LENGTH_SHORT).show();
-                }
-
-                finish();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    private void initViewModel() {
+        mViewModel = ViewModelProviders.of(this)
+                .get(EditViewModel.class);
+        mViewModel.mLiveMovie.observe(this, new Observer<MovieEntity>() {
+            @Override
+            public void onChanged(@Nullable MovieEntity movieEntity) {
+                if (movieEntity != null && !mEditing) {
+                    eTitle.setText(movieEntity.getTitle());
+                    eDirector.setText(movieEntity.getDirector());
+                    eYear.setText(movieEntity.getYear());
+                    eRuntime.setText(Integer.toString(movieEntity.getRunTime()));
+                }
+            }
+        });
 
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            setTitle(R.string.new_movie);
+            mNewMovie = true;
+        } else {
+            setTitle(R.string.edit_movie);
+            int movieId = extras.getInt(MOVIE_ID_KEY);
+            mViewModel.loadData(movieId);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!mNewMovie) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_edit, menu);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            saveOrUpdate();
+            return true;
+        }
+        else if (item.getItemId() == R.id.action_delete) {
+            mViewModel.deleteMovie();
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveOrUpdate() {
+
+        if (TextUtils.isEmpty(eTitle.getText().toString().trim())) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return;
+        }
+        mViewModel.saveOrUpdateMovie(
+                eTitle.getText().toString(),
+                eDirector.getText().toString(),
+                eYear.getText().toString(),
+                Integer.parseInt(eRuntime.getText().toString())
+        );
+
+        finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(EDITING_KEY, true);
+        super.onSaveInstanceState(outState);
+    }
 }

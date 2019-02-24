@@ -9,7 +9,6 @@ import java.util.List;
 
 import edu.cascadia.mobile.apps.movies.database.AppRepository;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
-import edu.cascadia.mobile.apps.movies.utilities.SampleData;
 
 public class MainViewModel extends AndroidViewModel {
 
