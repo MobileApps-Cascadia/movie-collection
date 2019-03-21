@@ -1,5 +1,6 @@
 package edu.cascadia.mobile.apps.movies;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,24 +22,31 @@ import edu.cascadia.mobile.apps.movies.database.movieDatabase;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 import edu.cascadia.mobile.apps.movies.ui.MoviesAdapter;
 import edu.cascadia.mobile.apps.movies.utilities.SampleData;
+import edu.cascadia.mobile.apps.movies.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     MoviesAdapter mMoviesAdapter;
-    private movieDatabase mDatabase;
+    public movieDatabase mDatabase;
+    //public MainViewModel mViewModel;
+    private List<MovieEntity> movieData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final MainViewModel mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mRecyclerView = findViewById(R.id.recycler_view);
 
+
+
         //Get Database
         mDatabase = movieDatabase.getInstance(this);
-        mDatabase.movieDao().addAll(SampleData.getMovies());
+        movieData.addAll(mViewModel.mMovies  );
+
 
         initRecyclerView();
 
@@ -53,10 +61,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // this was my issue , instance of the view model was never being reached so it remained null
+    // added this code to the oncreate.
+   //private void initViewModel() {
+        //mViewModel = ViewModelProviders.of(this)
+                 //.get(MainViewModel.class);
+    //}
+
     private void initRecyclerView(){
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MoviesAdapter(mDatabase.movieDao().getMovies(),this));
+        mMoviesAdapter = new MoviesAdapter(movieData, this);
+        mRecyclerView.setAdapter(mMoviesAdapter);
     }
 
     @Override
