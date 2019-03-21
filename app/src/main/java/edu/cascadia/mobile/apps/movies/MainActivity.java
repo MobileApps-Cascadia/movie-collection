@@ -1,5 +1,6 @@
 package edu.cascadia.mobile.apps.movies;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,12 +22,14 @@ import edu.cascadia.mobile.apps.movies.database.movieDatabase;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 import edu.cascadia.mobile.apps.movies.ui.MoviesAdapter;
 import edu.cascadia.mobile.apps.movies.utilities.SampleData;
+import edu.cascadia.mobile.apps.movies.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     MoviesAdapter mMoviesAdapter;
     private movieDatabase mDatabase;
+    private MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Get Database
         mDatabase = movieDatabase.getInstance(this);
-        mDatabase.movieDao().addAll(SampleData.getMovies());
+        mDatabase.movieDao().addAll(mViewModel.mMovies);
 
+        initViewModel();
         initRecyclerView();
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -53,9 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void initViewModel() {
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+    }
+
     private void initRecyclerView(){
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         mRecyclerView.setAdapter(new MoviesAdapter(mDatabase.movieDao().getMovies(),this));
     }
 
