@@ -17,6 +17,8 @@ public class MovieEntity  {
     @ColumnInfo(name = "run_time")private int runTime;
     @ColumnInfo(name = "director_id")
     private String director;
+    //private int director;
+    //@ForeignKey(entity = DirectorEntity.class, parentColumns = "id", childColumns = "director_id")
 
     @Ignore
     public MovieEntity() {

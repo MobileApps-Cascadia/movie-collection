@@ -1,5 +1,6 @@
 package edu.cascadia.mobile.apps.movies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,20 +24,32 @@ public class EditMovie extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mDatabase = movieDatabase.getInstance(this);
+        final Intent EditIntent = this.getIntent();
+        int movieId = EditIntent.getIntExtra("movieIndex", 0);
+        //get current movie from database (dao) using movieId
+        MovieEntity currentMovie = mDatabase.movieDao().getMovie(movieId);
+        //get text fields from layout for title, director, year, runtime
+        EditText title = findViewById(R.id.edit_title);
+        EditText director = findViewById(R.id.edit_director);
+        EditText year = findViewById(R.id.edit_year);
+        EditText runtime = findViewById(R.id.edit_runtime);
+        //set title, director, year, runtime using current movie values
+        title.setText(currentMovie.getTitle());
+        director.setText(currentMovie.getDirector());
+        year.setText(currentMovie.getYear());
+        //runtime.setText(currentMovie.getRunTime());
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton saveChanges = findViewById(R.id.saveChanges);
+        saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO manage movie update by setting movie id if avaliable
-                int movieId = 0;
-
                 //Add Movie
                 EditText eTitle = findViewById(R.id.edit_title);
                 EditText eDirector = findViewById(R.id.edit_director);
                 EditText eYear = findViewById(R.id.edit_year);
                 EditText eRuntime = findViewById(R.id.edit_runtime);
                 int runtime = Integer.parseInt(eRuntime.getText().toString());
+                int movieId = EditIntent.getIntExtra("movieIndex", 0);
 
                 MovieEntity mMovie = new MovieEntity(
                         movieId,
@@ -44,7 +57,7 @@ public class EditMovie extends AppCompatActivity {
                         eDirector.getText().toString(),
                         eYear.getText().toString(),
                         runtime
-                        );
+                );
 
                 mDatabase.movieDao().addOrUpdate(mMovie);
 

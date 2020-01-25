@@ -29,19 +29,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_list_item, parent, false);
-
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final ViewHolder holdViewOfMovieListItem = new ViewHolder(view);
+        FloatingActionButton editMovieListItem = view.findViewById(R.id.editMovieListItem);
+        editMovieListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO: pass movie data to the intent
-
-                Intent editMovie = new Intent("edu.cascadia.mobile.apps.movies.EditMovie");
+                int indexOfClickedMovieItem = holdViewOfMovieListItem.getAdapterPosition();
+                Intent editMovie =
+                        new Intent("edu.cascadia.mobile.apps.movies.EditMovie")
+                                .putExtra("movieIndex", indexOfClickedMovieItem);
                 parent.getContext().startActivity(editMovie);
             }
         });
 
-        return new ViewHolder(view);
+        return holdViewOfMovieListItem;
     }
 
     @Override
@@ -61,7 +63,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
         TextView mTextView;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
             mTextView = itemView.findViewById(R.id.movie_text);
         }
