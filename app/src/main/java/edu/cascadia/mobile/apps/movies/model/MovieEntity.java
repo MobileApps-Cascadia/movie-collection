@@ -8,7 +8,8 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 
-@Entity(tableName = "movie")
+
+@Entity(tableName = "movie", indices = @Index(value = {"director_id"}, unique = true),foreignKeys = @ForeignKey(entity = MovieEntity.class, parentColumns = "director_id", childColumns = "director_id"))
 public class MovieEntity  {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -17,6 +18,8 @@ public class MovieEntity  {
     @ColumnInfo(name = "run_time")private int runTime;
     @ColumnInfo(name = "director_id")
     private String director;
+
+
 
     @Ignore
     public MovieEntity() {

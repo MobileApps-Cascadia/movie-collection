@@ -6,9 +6,10 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.graphics.Movie;
 
+import edu.cascadia.mobile.apps.movies.model.DirectorEntity;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 
-@Database(entities = {MovieEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {MovieEntity.class, DirectorEntity.class}, version = 4, exportSchema = false)
 public abstract class movieDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "MovieDatabase.db";
     public static volatile  movieDatabase instance;
@@ -23,6 +24,7 @@ public abstract class movieDatabase extends RoomDatabase {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
                             movieDatabase.class, DATABASE_NAME)
                             .allowMainThreadQueries()
+                            .fallbackToDestructiveMigration()
                             .build();
             }
         }
