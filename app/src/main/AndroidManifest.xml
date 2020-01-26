@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".model.DirectorEntity"></activity>
         <activity
             android:name=".EditMovie"
             android:label="@string/title_activity_edit_movie"
@@ -17,8 +18,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="edu.cascadia.mobile.apps.movies.EditMovie" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.cascadia.mobile.apps.movies.MainActivity" />

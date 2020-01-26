@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         initRecyclerView();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton createNewMovie = findViewById(R.id.createMovieButton);
+        createNewMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent editMovie = new Intent("edu.cascadia.mobile.apps.movies.EditMovie");

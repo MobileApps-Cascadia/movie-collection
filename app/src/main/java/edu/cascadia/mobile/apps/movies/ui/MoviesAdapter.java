@@ -2,6 +2,7 @@ package edu.cascadia.mobile.apps.movies.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import edu.cascadia.mobile.apps.movies.MainActivity;
 import edu.cascadia.mobile.apps.movies.R;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 
@@ -30,18 +32,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_list_item, parent, false);
 
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final ViewHolder holdMovieListItem = new ViewHolder(view);
+        FloatingActionButton editMovieListItem = view.findViewById(R.id.editMovieListItem);
+        editMovieListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: pass movie data to the intent
-
-                Intent editMovie = new Intent("edu.cascadia.mobile.apps.movies.EditMovie");
+                int indexOfMovieItem = holdMovieListItem.getAdapterPosition();
+                Intent editMovie = new Intent("edu.cascadia.mobile.apps.movies.EditMovie")
+                                .putExtra("movieIndex", indexOfMovieItem);
                 parent.getContext().startActivity(editMovie);
             }
         });
 
-        return new ViewHolder(view);
+        return holdMovieListItem;
     }
 
     @Override

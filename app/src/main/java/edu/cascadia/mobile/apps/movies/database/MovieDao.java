@@ -2,6 +2,7 @@ package edu.cascadia.mobile.apps.movies.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -9,6 +10,7 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import edu.cascadia.mobile.apps.movies.model.DirectorEntity;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 
 @Dao
