@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_list_item, parent, false);
 
+        final ViewHolder viewHolder = new ViewHolder(view);
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,11 +39,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
                 //TODO: pass movie data to the intent
 
                 Intent editMovie = new Intent("edu.cascadia.mobile.apps.movies.EditMovie");
+                int movieId = mMovies.get(viewHolder.getAdapterPosition()).getId();
+                editMovie.putExtra("movieId",movieId);
                 parent.getContext().startActivity(editMovie);
             }
         });
 
-        return new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package edu.cascadia.mobile.apps.movies.database;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -31,6 +32,8 @@ public interface MovieDao {
     MovieEntity getMovie(int id);
     @Query("select * from movie order by title asc")
     List<MovieEntity> getMovies();
+    @Query("select MAX(id) from movie")
+    int getMaxId();
 
     //Count
     @Query("select COUNT(*) from movie")
