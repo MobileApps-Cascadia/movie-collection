@@ -63,27 +63,26 @@ public class EditMovie extends AppCompatActivity {
 
                 //handle new movie or existing case id
                 boolean isNew = (mId == -1);
+                int movieId;
                 String snackBarMessage;
 
                 if (isNew) {
-                    mMovie = new MovieEntity(
-                            (mDatabase.movieDao().getMaxId() + 1),
-                            eTitle.getText().toString(),
-                            eDirector.getText().toString(),
-                            eYear.getText().toString(),
-                            runtime
-                    );
-                    mDatabase.movieDao().addOrUpdate(mMovie);
-                    snackBarMessage = "Added New Record: " + mMovie.getTitle();
+                    movieId = mDatabase.movieDao().getMaxId() + 1;
+                    snackBarMessage = "Added New Record: " + eTitle.getText().toString();
                 }
                 else {
-                    mMovie = mDatabase.movieDao().getMovie(mId);
-                    mMovie.setTitle(eTitle.getText().toString());
-                    mMovie.setDirector(eDirector.getText().toString());
-                    mMovie.setYear(eYear.getText().toString());
-                    mMovie.setRunTime(Integer.parseInt(eRuntime.getText().toString()));
-                    snackBarMessage = "Updated Existing Record: " + mMovie.getTitle();
+                    movieId = mId;
+                    snackBarMessage = "Updated Existing Record: " + eTitle.getText().toString();
                 }
+
+                mMovie = new MovieEntity(
+                        movieId,
+                        eTitle.getText().toString(),
+                        eDirector.getText().toString(),
+                        eYear.getText().toString(),
+                        runtime
+                );
+                mDatabase.movieDao().addOrUpdate(mMovie);
 
                 Snackbar.make(view, snackBarMessage, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

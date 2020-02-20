@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     MoviesAdapter mMoviesAdapter;
     private movieDatabase mDatabase;
+    static boolean isFirstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mRecyclerView = findViewById(R.id.recycler_view);
-
         //Get Database
         mDatabase = movieDatabase.getInstance(this);
-        mDatabase.movieDao().addAll(SampleData.getMovies());
+
+        if (isFirstTime) {
+            mDatabase.movieDao().addAll(SampleData.getMovies());
+            isFirstTime = false;
+        }
 
         initRecyclerView();
 
